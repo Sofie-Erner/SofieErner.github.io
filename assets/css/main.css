@@ -2198,13 +2198,14 @@ input, select, textarea {
 
 		.image.avatar {
 			border-radius: 100%;
-			overflow: hidden;
+			/* overflow: hidden; */
 		}
 
 			.image.avatar img {
-				border-radius: 100%;
-				display: block;
-				width: 100%;
+				border-radius: 100%; /* makes a circle around image */
+				display: block; /* text below image, alignment */
+				width: 200%;
+				margin-left: -4em;
 			}
 
 		.image.main {
