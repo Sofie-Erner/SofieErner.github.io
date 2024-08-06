@@ -1785,7 +1785,8 @@ input, select, textarea {
 
 	header.major h2 {
 		color: #1E7B99 /*#4acaa8*/;
-		font-size: 3.5em;
+		font-size: 2.5em;
+		margin-top: -0.5em;
 	}
 
 		header.major h2 + p {
@@ -1793,6 +1794,7 @@ input, select, textarea {
 			font-size: 1.75em;
 			font-weight: 700;
 			margin-top: -0.75em;
+			margin-bottom: 0.5em;
 		}
 		header.major h2 + t {
 			color: #aaa; /* subtitle in About*/
@@ -2708,18 +2710,12 @@ input, select, textarea {
 			color:black;
 			border: 2px solid #1E7B99;
 			border-radius: 8px;
+			margin-left: 1em;
 			width: 30%;
 		}
 		.button.experience:hover {
 			background-color:  #1E7B99;
 			color: white;
-		}
-		.button.experience2 {
-			background-color: white;
-			color:black;
-			border: 2px solid black;
-			border-radius: 8px;
-			width: 30%;
 		}
 
 /* Features */
@@ -2814,7 +2810,7 @@ input, select, textarea {
 			#header > header .avatar {
 				display: block;
 				margin: 0 auto 2.25em auto;
-				width: 8em;
+				width: 7.5em;
 			}
 
 			#header > header h1 {
