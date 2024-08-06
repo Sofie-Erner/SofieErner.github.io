@@ -6,7 +6,7 @@ const divexp = document.getElementById("expDiv");
 
 function changeToSkills() {
   divexp.innerHTML = 
-  "<img src='images/Skills_graphic.PNG' alt='Graphics displaying skills with associated levels of experience' width='100%'  /> <p> Code available at <a href='https://github.com/Sofie-Erner' target='_blank' > GitHub </a> </p>";
+  "<img src='images/Skills_graphic.PNG' width='90%' alt='Graphics displaying skills with associated levels of experience'/><p>Code available at <a href='https://github.com/Sofie-Erner' target='_blank'>GitHub</a></p>";
 }
 skillbut1.addEventListener('click',changeToSkills);
 
