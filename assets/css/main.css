@@ -1740,19 +1740,15 @@ input, select, textarea {
 		}
 
 		@media screen and (max-width: 1024px) {
-
 			.container {
 				width: 100% !important;
 			}
-
 		}
 
 		@media screen and (max-width: 480px) {
-
 			.container {
 				max-width: calc(100% - 3.375em);
 			}
-
 		}
 
 /* Section/Article */
@@ -2223,6 +2219,32 @@ input, select, textarea {
 			display: block;
 			border-radius: 0;
 			width: 10%;
+		}
+
+		.hover1 {
+			display: block;
+			width: 50px;
+			height: 50px;
+			bottom: -10px;
+			position: relative;
+			border-radius: 0em 0em 0em 0em;
+		}
+
+		.overlay {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			height: 100%;
+			width: 100%;
+			opacity: 0;
+			transition: .0s ease-in-out;
+			content: url("../../images/hep2.png");
+		}
+
+		.hover1:hover .overlay {
+			opacity: 1;
 		}
 
 /* List */
