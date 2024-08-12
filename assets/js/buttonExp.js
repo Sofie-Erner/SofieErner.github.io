@@ -14,7 +14,42 @@ skillbut1.addEventListener('click',changeToSkills);
 
 /* Work Experience */
 function changeToWork() {
-  divexp.innerHTML = "<p> here will be work experiences </p>";
+  timeL1 = "<div class='gridHead'>2015</div><div class='gridHead'>2016</div><div class='gridHead'>2017</div>";
+  timeL2 = "<div class='gridHead'>2018</div><div class='gridHead'>2019</div><div class='gridHead'>2020</div>";
+  timeL3 = "<div class='gridHead'>2021</div><div class='gridHead'>2022</div>";
+  timeL4 = "<div class='gridHead'>2023</div><div class='gridHead'>2024</div>";
+  timeL5 = "<div class='gridBorder'></div>";
+  timtLT = ''.concat(timeL1,timeL2,timeL3,timeL4,timeL5);
+
+  acad1 = "<div class='gridElem acad' style='--s:4;--e:24'>M.Sci.</div>";
+  acad2 = "<div class='gridElem acad' style='--s:24;--e:40'>PhD</div>";
+  TacadT = ''.concat(acad1,acad2);
+
+  Twork1 = "<div class='gridElem work' style='--s:14;--e:17'>Mentor</div>";
+  Twork2 = "<div class='gridElem work' style='--s:28;--e:39'>Demonstrator</div>";
+  TworkT = ''.concat(Twork1,Twork2);
+
+  Tvol1 = "<div class='gridElem vol' style='--s:12;--e:20'>Club President</div>";
+  Tvol2 = "<div class='gridElem vol' style='--s:30;--e:39'>PhD Representative</div>";
+  TvolT = ''.concat(Tvol1,Tvol2);
+
+  timeLT = ''.concat("<div class='grid'>",timtLT,TacadT,TworkT,TvolT,"</div>")
+
+  work1 = "<div  id='work1'> <h3 style='text-align:center'> Teaching </h3> </div>";
+  work2 = "<h4> Teaching demonstrator </h4> <p style='margin-top:-10px;'> Department of Physics, Durham University </p>";
+  work3 = "<h4> Mentoring Summer Students </h4> <p style='margin-top:-10px;'> Schoold of Physics & Astronomy, University of Glasgow </p>";
+  workT = ''.concat("<div class='column1' id='rcorners' style='border: 2px solid lightblue;'>",work1,work2,work3,"</div>");
+
+  vol1 = "<h3 style='text-align:center'> Volunteering </h3>";
+  vol2 = "<h4> PhD Student Representative & Co-Chair </h4> <h5 style='margin-top:-10px;'> Post-Graduate Student-Staff Committee </h5>";
+  vol3 = "<p style='margin-top:-10px;'> Department of Physics, Durham University </p>";
+  vol4 = "<h4> President of Committee </h4>";
+  vol5 = "<p style='margin-top:-10px;'> University of Glasgow Fencing Club </p>";
+  volT = ''.concat("<div class='column1' id='rcorners' style='border: 2px solid greenyellow;'>",vol1,vol2,vol3,vol4,vol5,"</div>");
+
+  other1 = "<h3 style='text-align:center'> Other </h3> <p>Rounded corners!</p>";
+  otherT = ''.concat("<div class='column1' id='rcorners'>",other1,"</div>");
+  divexp.innerHTML = ''.concat(timeLT,"<div class='column2'>",workT,volT,"<div>");
 }
 workbut1.addEventListener('click',changeToWork);
 
@@ -27,7 +62,7 @@ function changeToAcad() {
   str5 = "<a href='https://journals.aps.org/prd/abstract/10.1103/PhysRevD.108.115013' target='_blank' > Phys. Rev. D 108, 115013 </a> </p></div></article>";
   pub1 = ''.concat(str1,str2,str3,str4,str5);
 
-  str6 = "<article id='pubs2'><img src='images/Thesis_front.png' alt='' class ='image'/><div class='inner'>";
+  str6 = "<article id='pubs2'><img src='images/Thesis_front_1.png' alt='' class ='image'/><div class='inner'>";
   str7 = "<h4>Extending the Reach of Collider Searches for Dark Matter </h4>";
   str8 = "<h5> Distinguishing Invisible States at Belle II <br> & ANUBIS Sensitivity Studies </h5>";
   str9 = "<p> PhD Thesis <a href='http://etheses.dur.ac.uk/15562/' target='_blank' > (Link)</a> </p></div></article>";
