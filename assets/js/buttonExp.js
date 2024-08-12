@@ -6,9 +6,30 @@ const divexp = document.getElementById("expDiv");
 
 /* Skills */
 function changeToSkills() {
-  str1 = "<img src='images/Skills_graphic.PNG' width='90%' alt='Graphics displaying skills with associated levels of experience'/>"
-  str2 = "<p>Code available at <a href='https://github.com/Sofie-Erner' target='_blank'>GitHub</a></p>"
-  divexp.innerHTML = ''.concat(str1,str2);
+  skills1 = "<!-- Skills --> <h3> Skills </h3><article id='skills1'>";
+  skills2 = "<img src='images/Skills_graphic.PNG' width='90%' alt='Graphics displaying skills with associated levels of experience'/>";
+  skills3 = "<p>Code available at <a href='https://github.com/Sofie-Erner' target='_blank'>GitHub</a></p><article>";
+  skillsT = ''.concat(skills1,skills2,skills3);
+
+  Sskills1 = "<!-- Soft Skills --><h3> Soft Skills </h3><article id='skills2'>";
+  Sskills2 = "<div class='grid' style='grid-template-columns:repeat(24, auto);'>";
+  Sskills3 = "<div class='gridHead2'>Critical Thinking</div><div class='gridHead2'>Problem Solving</div>";
+  Sskills4 = "<div class='gridHead2'>Teamwork</div><div class='gridHead2'>Time Management</div>";
+  Sskills5 = "<div class='gridHead2'>Project Management</div><div class='gridHead2'>Team Management</div>";
+  SskillsT = ''.concat(Sskills1,Sskills2,Sskills3,Sskills4,Sskills5,"</div></article>");
+
+  lang1 = "<!-- Languages --><h3>Languages </h3><article id='lang1'><div class='column1'>";
+  lang2 = "<h4 style='text-align:center;'> Fluent </h4>";
+  lang3 = "<img src='images/uk_flag.jpeg' alt='UK flag' class='image'/><div class='inner'><p> English </p></div>";
+  lang4 = "<img src='images/danish_flag.jpeg' alt='Danish flag' class='image'/><div class='inner'><p> Danish </p></div>";
+  lang5 = "</div><div class='column1'><h4 style='text-align:center;'> Elementary </h4>";
+  lang6 = "<img src='images/norwegian_flag.jpeg' alt='Norwegian flag' class='image'/><div class='inner'><p> Norwegian </p></div>";
+  lang7 = "<img src='images/swedish_flag.jpeg' alt='Swedish Flag' class='image'/><div class='inner'><p> Swedish </p></div>";
+  lang8 = "<img src='images/french_flag.png' alt='French Flag' class='image'/><div class='inner'><p> French </p></div>";
+  lang9 = "</div></article></div>";
+  langT = ''.concat(lang1,lang2,lang3,"<br> <br>",lang4,lang5,lang6,"<br> <br>",lang7,"<br> <br>",lang8,lang9)
+
+  divexp.innerHTML = ''.concat("<div class='features'>",skillsT,SskillsT,langT,"</div>");
 }
 skillbut1.addEventListener('click',changeToSkills);
 
