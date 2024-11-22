@@ -7,9 +7,15 @@ const c2 = "#1E88E5";
 const c3 = "#FFC107";
 const c4 = "#004D40";
 
-// Get canvas
+// --- Get canvas ---
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
+
+// Width of Canvas & Height
+const canW = canvas.width;
+const canH = canvas.height;
+
+// Text properties
 ctx.font = "bold 20px Lato";
 ctx.textBaseline = "middle";
 
@@ -39,9 +45,6 @@ function DrawArrow(x0=0, y0=0, l1=10, l2=10, l3=10, l4=10, c1="#D81B60", c2="#1E
     ctx.lineTo(x2m,y1);
     ctx.lineTo(x1m + l1,y2 - l1);
     ctx.lineTo(x1m + l1,y0);
-
-    ctx.strokeStyle = c1;
-    ctx.stroke();
     ctx.fillStyle = c1;
     ctx.fill();
 
@@ -51,9 +54,6 @@ function DrawArrow(x0=0, y0=0, l1=10, l2=10, l3=10, l4=10, c1="#D81B60", c2="#1E
     ctx.lineTo(x1m + l1 + l2,y0);
     ctx.lineTo(x1m + l1 + l2,y2 - l1 + l2);
     ctx.lineTo(x1m + l1,y2 - l1);
-
-    ctx.strokeStyle = c2;
-    ctx.stroke();
     ctx.fillStyle = c2;
     ctx.fill();
 
@@ -63,9 +63,6 @@ function DrawArrow(x0=0, y0=0, l1=10, l2=10, l3=10, l4=10, c1="#D81B60", c2="#1E
     ctx.lineTo(x1p - l4 - l3,y0);
     ctx.lineTo(x1p - l4 - l3,y2 - l4 + l3);
     ctx.lineTo(x1p - l4,y2 - l4);
-
-    ctx.strokeStyle = c3;
-    ctx.stroke();
     ctx.fillStyle = c3;
     ctx.fill();
 
@@ -76,9 +73,6 @@ function DrawArrow(x0=0, y0=0, l1=10, l2=10, l3=10, l4=10, c1="#D81B60", c2="#1E
     ctx.lineTo(x2p,y1);
     ctx.lineTo(x1p - l4,y2 - l4);
     ctx.lineTo(x1p - l4,y0);
-
-    ctx.strokeStyle = c4;
-    ctx.stroke();
     ctx.fillStyle =c4;
     ctx.fill();
 
@@ -94,42 +88,65 @@ function DrawArrow(x0=0, y0=0, l1=10, l2=10, l3=10, l4=10, c1="#D81B60", c2="#1E
     ctx.lineTo(x1m,y0);
     ctx.lineTo(x0, y0);
 
-    ctx.lineWidth = 4;
+    ctx.lineWidth = 2;
     ctx.strokeStyle = "black";
     ctx.stroke();
 };
 
-
-function MakeLegend(c1="#D81B60", c2="#1E88E5", c3="#FFC107", c4="#004D40"){
-    // Width of Canvas: 1250 & Height: 375
+// Draw legend at bottom of diagram
+function MakeLegend(canH, c1="#D81B60", c2="#1E88E5", c3="#FFC107", c4="#004D40"){
     ctx.strokeStyle = c1;
     ctx.fillStyle = c1;
     let txt = "Rejection No Feedback";
-    ctx.fillRect(10,375-30,20,20);
-    ctx.fillText(txt,40,375-20);
+    ctx.fillRect(10,canH-30,20,20);
+    ctx.fillText(txt,40,canH-20);
 
     ctx.strokeStyle = c2;
     ctx.fillStyle = c2;
     let wTxt = ctx.measureText(txt).width;
     txt = "Rejection Not Useful Feedback";
-    ctx.fillRect(50+wTxt,375-30,20,20);
-    ctx.fillText(txt,80+wTxt,375-20);
+    ctx.fillRect(50+wTxt,canH-30,20,20);
+    ctx.fillText(txt,80+wTxt,canH-20);
 
     ctx.strokeStyle = c3;
     ctx.fillStyle = c3;
     wTxt = 40 + wTxt + ctx.measureText(txt).width;
     txt = "Rejection Useful Feedback";
-    ctx.fillRect(50+wTxt,375-30,20,20);
-    ctx.fillText(txt,80+wTxt,375-20);
+    ctx.fillRect(50+wTxt,canH-30,20,20);
+    ctx.fillText(txt,80+wTxt,canH-20);
 
     ctx.strokeStyle = c4;
     ctx.fillStyle = c4;
     wTxt = 40 + wTxt + ctx.measureText(txt).width;
     txt = "Not Hiring Anymore";
-    ctx.fillRect(50+wTxt,375-30,20,20);
-    ctx.fillText(txt,80+wTxt,375-20);
+    ctx.fillRect(50+wTxt,canH-30,20,20);
+    ctx.fillText(txt,80+wTxt,canH-20);
 };
-// --- Make Diagram ---
 
-DrawArrow(60,20,10,10,10,10,c1,c2,c3,c4);
-MakeLegend(c1,c2,c3,c4);
+// --- Make Diagram ---
+// Draw legend
+MakeLegend(canH,c1,c2,c3,c4);
+
+// Make upper and lower lines
+ctx.beginPath();
+ctx.moveTo(10,50);
+ctx.lineTo(canW-200,50);
+
+ctx.moveTo(10,canH-75);
+ctx.lineTo(canW-200,canH-75);
+
+ctx.lineWidth = 4;
+ctx.strokeStyle = "black";
+ctx.stroke();
+
+// Text boxes for offers & rejections
+ctx.roundRect(canW-200,30,100,40,[10]);
+ctx.fillText("Offers",canW-180,50,100,40);
+
+ctx.roundRect(canW-200,canH-95,100,40,[10]);
+ctx.fillText("Rejections",canW-180,canH-75,100,40);
+
+ctx.lineWidth = 2;
+ctx.stroke();
+
+//DrawArrow(120,120,10,10,10,10,c1,c2,c3,c4);
