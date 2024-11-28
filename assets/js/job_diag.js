@@ -18,6 +18,7 @@ const canH = canvas.height;
 // Text properties
 ctx.font = "bold 20px Lato";
 ctx.textBaseline = "middle";
+ctx.textAlign = "left";
 
 // This script contains the code to draw arrows
 // The arrow will be filled with 4 different segments
@@ -123,6 +124,17 @@ function MakeLegend(canH, c1="#D81B60", c2="#1E88E5", c3="#FFC107", c4="#004D40"
     ctx.fillText(txt,80+wTxt,canH-20);
 };
 
+// Draw rounded rectangle with text in it
+function DrawRect(x0=0, y0=0,h0,col = "black",txt){
+    ctx.fillStyle = col;
+    wRect = ctx.measureText(txt).width + 20;
+    ctx.roundRect(x0,y0,wRect,h0,[10]);
+    ctx.fillText(txt,x0 + 10,y0 + 20,wRect,h0);
+
+    ctx.lineWidth = 2;
+    ctx.stroke();
+};
+
 // --- Make Diagram ---
 // Draw legend
 MakeLegend(canH,c1,c2,c3,c4);
@@ -140,13 +152,9 @@ ctx.strokeStyle = "black";
 ctx.stroke();
 
 // Text boxes for offers & rejections
-ctx.roundRect(canW-200,30,100,40,[10]);
-ctx.fillText("Offers",canW-180,50,100,40);
+DrawRect(canW-200,30,40,"black","Offers");
+DrawRect(canW-200,canH-95,40,"black","Rejections");
 
-ctx.roundRect(canW-200,canH-95,100,40,[10]);
-ctx.fillText("Rejections",canW-180,canH-75,100,40);
-
-ctx.lineWidth = 2;
-ctx.stroke();
+// 
 
 //DrawArrow(120,120,10,10,10,10,c1,c2,c3,c4);
