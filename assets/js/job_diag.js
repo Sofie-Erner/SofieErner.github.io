@@ -96,6 +96,8 @@ function DrawArrow(x0=0, y0=0, l1=10, l2=10, l3=10, l4=10, c1="#D81B60", c2="#1E
 
 // Draw legend at bottom of diagram
 function MakeLegend(canH, c1="#D81B60", c2="#1E88E5", c3="#FFC107", c4="#004D40"){
+    // Using height of canvas, place legend for colours c1-c4
+
     ctx.strokeStyle = c1;
     ctx.fillStyle = c1;
     let txt = "Rejection No Feedback";
@@ -125,14 +127,28 @@ function MakeLegend(canH, c1="#D81B60", c2="#1E88E5", c3="#FFC107", c4="#004D40"
 };
 
 // Draw rounded rectangle with text in it
-function DrawRect(x0=0, y0=0,h0,col = "black",txt){
+function DrawRect(x0=0, y0=0,col = "black",txt,num){
+    // place rounded rectangle at (x0,y0) with colour col, text txt, and number num
+
     ctx.fillStyle = col;
-    wRect = ctx.measureText(txt).width + 20;
-    ctx.roundRect(x0,y0,wRect,h0,[10]);
-    ctx.fillText(txt,x0 + 10,y0 + 20,wRect,h0);
+    
+    textMes = ctx.measureText(txt);
+    wRect = textMes.width + 20; // calculate width
+    hRect = 2*(textMes.actualBoundingBoxAscent + textMes.actualBoundingBoxDescent) + 40; // calculate height
+
+    console.log(hRect);
+
+    ctx.roundRect(x0,y0,wRect,hRect,[10]);
+    ctx.fillText(txt,x0 + 10,y0 + 20,wRect,hRect/2);
+    ctx.fillText(num,x0 + 10,y0 + 20 + hRect/2,wRect,hRect/2);
 
     ctx.lineWidth = 2;
     ctx.stroke();
+};
+
+// Draw lines with direction between boxes
+function DrawLine(x0,y0,x1,y1,col = "black"){
+    // make line with arrow halfway along to go from one box to another
 };
 
 // --- Make Diagram ---
@@ -152,9 +168,15 @@ ctx.strokeStyle = "black";
 ctx.stroke();
 
 // Text boxes for offers & rejections
-DrawRect(canW-200,30,40,"black","Offers");
-DrawRect(canW-200,canH-95,40,"black","Rejections");
+DrawRect(canW-200,15,"black","Offers","0");
+DrawRect(canW-200,canH-115,"black","Rejections","50");
 
-// 
+// Waiting responses
+DrawRect(20,(canH-100)/2,"black","Waiting Responses","100");
 
-//DrawArrow(120,120,10,10,10,10,c1,c2,c3,c4);
+
+// Total Applications
+wTot = ctx.measureText("Waiting Responses").width + 100;
+DrawRect(wTot,(canH-100)/2,"black","Total","150");
+wTot = ctx.measureText("Waiting Responses").width + 100 + ctx.measureText("Total").width/1.3;
+//DrawArrow(wTot,canH/2+50,38,5,5,2,c1,c2,c3,c4);
