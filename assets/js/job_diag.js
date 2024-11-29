@@ -146,12 +146,6 @@ function DrawArrow(x0=0, y0=0, yh=100, w1=10, w2=10, w3=10, w4=10, c1="#D81B60",
     ctx.stroke();
 };
 
-// Draw segments
-function DrawSeg(){
-
-
-}
-
 // Draw legend at bottom of diagram
 function MakeLegend(canH, c1="#D81B60", c2="#1E88E5", c3="#FFC107", c4="#004D40"){
     // Using height of canvas, place legend for colours c1-c4
@@ -203,8 +197,39 @@ function DrawRect(x0=0, y0=0,col = "black",txt,num){
 };
 
 // Draw lines with direction between boxes
-function DrawLine(x0,y0,x1,y1,col = "black"){
-    // make line with arrow halfway along to go from one box to another
+function DrawLine(xS,yS,xF,yF,col = "black"){
+    // make line with arrow half way to go from one box to another
+    // variables
+    const grad1 = (yF-yS)/(xF-yS); // gradient of line
+
+    const alpha = Math.atan(Math.abs(yF - yS)/Math.abs(xF-xS)); // angle of line
+    const beta = Math.PI/2 - alpha; // angle for getting arrow points
+
+    const xM = (1/2)*(xS + xF); // x of middle of arrow 
+    const yM = (1/2)*(yS + yF); // y of middle of arrow
+
+    const xB = xM - Math.cos(alpha)*10; // x of baseline of arrow 
+    const yB = yM - Math.sin(alpha)*10; // y of baseline of arrow
+    const xT = xM + Math.cos(alpha)*10; // x of tip of arrow
+    const yT = yM + Math.sin(alpha)*10; // y of tip of arrow
+
+    const deltaX = Math.cos(beta)*10; // for arrow points
+    const deltaY = Math.sin(beta)*10; // for arrow points
+
+    ctx.beginPath();
+    ctx.moveTo(xS,yS);
+    ctx.lineTo(xF,yF);
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = col;
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(xB,yB);
+    ctx.lineTo(xB - deltaX, yB + deltaY);
+    ctx.lineTo(xT,yT);
+    ctx.lineTo(xB + deltaX, yB - deltaY);
+    ctx.fillStyle = col;
+    ctx.fill();
 };
 
 // --- Make Diagram ---
@@ -235,4 +260,4 @@ DrawRect(20,(canH-100)/2,"black","Waiting Responses","100");
 wTot = ctx.measureText("Waiting Responses").width + 100;
 DrawRect(wTot,(canH-100)/2,"black","Total","150");
 wTot = ctx.measureText("Waiting Responses").width + 100 + ctx.measureText("Total").width/1.3;
-DrawArrow(wTot,canH/2+50,canH/2+150,5,5,5,25,c1,c2,c3,c4);
+DrawArrow(wTot,canH/2+50,canH/2+150,25,5,5,5,c1,c2,c3,c4);
