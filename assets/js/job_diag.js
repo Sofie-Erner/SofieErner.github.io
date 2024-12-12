@@ -208,21 +208,20 @@ function DrawRect(x0, y0, w0, h0, col="black", txt, num){
 function DrawLine(xS, yS, xF, yF, col="black"){
     // make line with arrow half way to go from one box to another
     // variables
-    //const grad1 = (yF-yS)/(xF-yS); // gradient of line
-
-    const alpha = Math.atan(Math.abs(yF - yS)/Math.abs(xF-xS)); // angle of line
+    const alpha = Math.atan((yF - yS)/(xF-xS)); // angle of line
     const beta = Math.PI/2 - alpha; // angle for getting arrow points
+
+    const opp = 10; // bottom of arrow
+    const adj = 20; // middle of arrow
 
     const xM = (1/2)*(xS + xF); // x of middle of arrow 
     const yM = (1/2)*(yS + yF); // y of middle of arrow
 
-    const xB = xM - Math.cos(alpha)*10; // x of baseline of arrow 
-    const yB = yM - Math.sin(alpha)*10; // y of baseline of arrow
-    const xT = xM + Math.cos(alpha)*10; // x of tip of arrow
-    const yT = yM + Math.sin(alpha)*10; // y of tip of arrow
+    const delta1 = Math.sin(beta)*(adj/2); // for arrow end points
+    const delta2 = Math.cos(beta)*(adj/2); // for arrow end points
 
-    const deltaX = Math.cos(beta)*10; // for arrow points
-    const deltaY = Math.sin(beta)*10; // for arrow points
+    const deltaX = Math.cos(beta)*opp; // for arrow points
+    const deltaY = Math.sin(beta)*opp; // for arrow points
 
     // Draw main line
     ctx.beginPath();
@@ -235,16 +234,30 @@ function DrawLine(xS, yS, xF, yF, col="black"){
     // Draw arrow head
     ctx.beginPath();
     if (xS < xF){ // end after finish point
+        // Draw line between arrow end points
+        let xB = xM - delta1; // x of baseline of arrow 
+        let yB = yM - delta2; // y of baseline of arrow
+        let xT = xM + delta1; // x of tip of arrow
+        let yT = yM + delta2; // y of tip of arrow
+
         ctx.moveTo(xB,yB);
-        ctx.lineTo(xB - deltaX, yB + deltaY);
-        ctx.lineTo(xT,yT);
         ctx.lineTo(xB + deltaX, yB - deltaY);
+        ctx.lineTo(xT,yT);
+        ctx.lineTo(xB - deltaX, yB + deltaY);
+        ctx.lineTo(xB,yB);
     }
     else {
-        ctx.moveTo(xT,yT);
-        ctx.lineTo(xT - deltaX, yT + deltaY);
+        // Draw line between arrow end points 
+        let xB = xM + delta1; // x of baseline of arrow   
+        let yB = yM + delta2; // y of baseline of arrow 
+        let xT = xM - delta1; // x of tip of arrow
+        let yT = yM - delta2; // y of tip of arrow
+
+        ctx.moveTo(xB,yB);
+        ctx.lineTo(xB + deltaX, yB - deltaY);
+        ctx.lineTo(xT,yT);
+        ctx.lineTo(xB - deltaX, yB + deltaY);
         ctx.lineTo(xB,yB);
-        ctx.lineTo(xT + deltaX, yT - deltaY);
     }
 
     ctx.fillStyle = col;
@@ -320,7 +333,7 @@ DrawRect(wTot,hTot - hRect,wRect,hRect,"black",txt,"10");
 DrawArrow(wTot + wRect/2,hTot, (canH - 40 - hRect/2),9,0,0,0,c1,c2,c3,c4); // arrow for rejections
 wTot = wTot + wRect;
 
-DrawLine(wTemp - 3,hTot + hRect + 3, wTot - wRect,hTot - hRect/2, col="black"); // To Online tests
+DrawLine(wTot - wRect,hTot - hRect/2, wTemp - 3,hTot + hRect + 3,col="black"); // To Online tests
 DrawLine(wTot - wRect + 3,hTot - 3, wTot - 3*wRect/2,hTot + 2*hRect, col="black"); // To Withdrawn
 DrawLine(wTot,hTot - hRect/2, wTot + 50,hTot - hRect/2, col="black"); // To 2nd Interview
 wTot = wTot + 50;
