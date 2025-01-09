@@ -31,7 +31,7 @@ function DrawArrow(x0, y0, yh, w1, w2, w3, w4, c1="#D81B60", c2="#1E88E5", c3="#
     
     // Define variables
     const w = w1 + w2 + w3 + w4; // total width of arrow
-    const h = yh - y0;
+    const h = yh - y0; // Height of arrow
 
     // Useful x and y coordinates (m for - and p for +)
     const x1m = x0 - w/2;
@@ -42,95 +42,54 @@ function DrawArrow(x0, y0, yh, w1, w2, w3, w4, c1="#D81B60", c2="#1E88E5", c3="#
 
     const y1 = y0 + 3*h/4;
 
-    let yTemp; // calculate y-height for segment
-    let xTemp; // calculate x value for segment
-
+    let yTemp = 0.0; // calculate y-height for segment
+    let xTemp = 0.0; // calculate x value for segment
+    let wTemp = 0.0; // temp value for total width of segments considered
 
     // Fill 1st segment
-    ctx.beginPath();
-    ctx.moveTo(x1m,y0);
-    ctx.lineTo(x1m,y1);
-    ctx.lineTo(x2m,y1);
-    
-    xTemp = x1m + w1;
-
-    if (w1 > w/2){ // if width over half of arrow
-        ctx.lineTo(x0,yh); // draw to middle of arrow
-        yTemp = yh - (h/(4*w))*(w1-w/2);
+    if (w1 != 0){ // first segment has width
+        [xTemp, yTemp] = DrawFirst(x0,y0,yh,x1m,x2m,y1,w,h,w1,c1);
+        wTemp = w1;
     }
     else {
-        yTemp = y1 + (h/(4*w))*(w/2 + w1);
-    }
-    
-    ctx.lineTo(xTemp,yTemp);
-    ctx.lineTo(xTemp,y0);
-    ctx.fillStyle = c1;
-    ctx.fill();
-
-    // Fill 2nd segment
-    ctx.beginPath();
-    ctx.moveTo(xTemp,y0);
-    ctx.lineTo(xTemp,yTemp);
-
-    xTemp = xTemp + w2;
-    if (w1 > w/2){ // if 1st segment width over half of arrow
-        yTemp = yTemp - (h/(4*w))*(w2); // negative gradient
-    }
-    else if( w1 + w2 > w/2){  //if 1st plus 2nd segments width over half of arrow
-        ctx.lineTo(x0,yh); // draw to middle of arrow
-        yTemp = yh - (h/(4*w))*(w2-(w/2-w1));
-    }
-    else { // if still not reached middle
-        yTemp = yTemp + (h/(4*w))*(w2); // positive gradient
+        if (w2 != 0){
+            [xTemp, yTemp] = DrawFirst(x0,y0,yh,x1m,x2m,y1,w,h,w2,c2);
+            wTemp = w2;
+        }
+        else if ( w3 != 0 ){
+            [xTemp, yTemp] = DrawFirst(x0,y0,yh,x1m,x2m,y1,w,h,w3,c3);
+            wTemp = w3;
+        }
+        else if (w4 != 0){
+            [xTemp, yTemp] = DrawFirst(x0,y0,yh,x1m,x2m,y1,w,h,w4,c4);
+            wTemp = w4;
+        }
     }
 
-    ctx.lineTo(xTemp,yTemp);
-    ctx.lineTo(xTemp,y0);
-    ctx.fillStyle = c2;
-    ctx.fill();
-
-    // Fill 3nd segment
-    ctx.beginPath();
-    ctx.moveTo(xTemp,y0);
-    ctx.lineTo(xTemp,yTemp);
-
-    xTemp = xTemp + w3;
-    if (w1 + w2 > w/2){ // if 1st plus 2nd segment width over half of arrow
-        yTemp = yTemp - (h/(4*w))*(w3); // negative gradient
+    // Fill next segment
+    if (wTemp == w1){ // only one segment
+        [xTemp, yTemp] = DrawMiddle(x0,y0,yh,xTemp,yTemp,w,wTemp,h,w2,c2); // Draw second
+        [xTemp, yTemp] = DrawMiddle(x0,y0,yh,xTemp,yTemp,w,wTemp,h,w3,c3); // Draw third
     }
-    else if( w1 + w2 + w3 > w/2){  //if the 3 segments width over half of arrow
-        ctx.lineTo(x0,yh); // draw to middle of arrow
-        yTemp = yh - (h/(4*w))*(w3-(w/2-w1-w2));
+    else if (wTemp == w2){ // first segment was empty
+        [xTemp, yTemp] = DrawMiddle(x0,y0,yh,xTemp,yTemp,w,wTemp,h,w3,c3); // Draw third
     }
-    else { // if still not reached middle
-        yTemp = yTemp + (h/(4*w))*(3); // positive gradient
-    }
-
-    ctx.lineTo(xTemp,yTemp);
-    ctx.lineTo(xTemp,y0);
-    ctx.fillStyle = c3;
-    ctx.fill();
 
     // Fill 4th segment
-    ctx.beginPath();
-    ctx.moveTo(x1p,y0);
-    ctx.lineTo(x1p,y1);
-    ctx.lineTo(x2p,y1);
-    
-    xTemp = x1p - w4;
-
-    if (w4 > w/2){ // if width over half of arrow
-        ctx.lineTo(x0,yh); // draw to middle of arrow
-        yTemp = yh - (h/(4*w))*(w4-w/2);
+    if (w4 != 0){ // last segment has width
+        DrawLast(x0,y0,yh,x1p,x2p,y1,w,h,w4,c4);
     }
     else {
-        yTemp = y1 + (h/(4*w))*(w/2 + w4);
+        if (w3 != 0){
+            DrawLast(x0,y0,yh,x1p,x2p,y1,w,h,w3,c3);
+        }
+        else if (w2 != 0){
+            DrawLast(x0,y0,yh,x1p,x2p,y1,w,h,w2,c2);
+        }
+        else if (w1 != 0){
+            DrawLast(x0,y0,yh,x1p,x2p,y1,w,h,w1,c1);
+        }
     }
-    
-    ctx.lineTo(xTemp,yTemp);
-    ctx.lineTo(xTemp,y0);
-    ctx.fillStyle = c4;
-    ctx.fill();
 
     // Draw the outline arrow
     ctx.beginPath();
@@ -148,6 +107,83 @@ function DrawArrow(x0, y0, yh, w1, w2, w3, w4, c1="#D81B60", c2="#1E88E5", c3="#
     ctx.strokeStyle = "black";
     ctx.stroke();
 };
+
+// Draw first segment of arrow
+function DrawFirst(x0,y0,yh,x1m,x2m,y1,w,h,wi,ci){
+    ctx.beginPath();
+    ctx.moveTo(x1m,y0);
+    ctx.lineTo(x1m,y1);
+    ctx.lineTo(x2m,y1);
+
+    let yTemp = 0.0;
+    let xTemp = x1m + wi;
+
+    if (wi > w/2){ // if width over half of arrow
+        ctx.lineTo(x0,yh); // draw to middle of arrow
+        yTemp = yh - (h/(4*w))*(wi-w/2);
+    }
+    else {
+        yTemp = y1 + (h/(4*w))*(w/2 + wi);
+    }
+    
+    ctx.lineTo(xTemp,yTemp);
+    ctx.lineTo(xTemp,y0);
+
+    ctx.fillStyle = ci;
+    ctx.fill();
+
+    return [xTemp, yTemp] // return x and y values to draw next segment
+}
+
+// Draw last segment of arrow
+function DrawLast(x0,y0,yh,x1p,x2p,y1,w,h,wi,ci){
+    ctx.beginPath();
+    ctx.moveTo(x1p,y0);
+    ctx.lineTo(x1p,y1);
+    ctx.lineTo(x2p,y1);
+    
+    let xTemp = x1p - wi;
+    let yTemp = 0.0;
+
+    if (wi > w/2){ // if width over half of arrow
+        ctx.lineTo(x0,yh); // draw to middle of arrow
+        yTemp = yh - (h/(4*w))*(wi-w/2);
+    }
+    else {
+        yTemp = y1 + (h/(4*w))*(w/2 + wi);
+    }
+    
+    ctx.lineTo(xTemp,yTemp);
+    ctx.lineTo(xTemp,y0);
+    ctx.fillStyle = ci;
+    ctx.fill();
+}
+
+// Draw middle segment of arrow
+function DrawMiddle(x0,y0,yh,xTemp,yTemp,w,wTemp,h,wi,ci){
+    ctx.beginPath();
+    ctx.moveTo(xTemp,y0);
+    ctx.lineTo(xTemp,yTemp);
+
+    xTemp = xTemp + wi;
+    if (wTemp > w/2){ // if 1st segment width over half of arrow
+        yTemp = yTemp - (h/(4*w))*(wi); // negative gradient
+    }
+    else if( wTemp + wi > w/2){  //if 1st plus 2nd segments width over half of arrow
+        ctx.lineTo(x0,yh); // draw to middle of arrow
+        yTemp = yh - (h/(4*w))*(wi-(w/2-wTemp));
+    }
+    else { // if still not reached middle
+        yTemp = yTemp + (h/(4*w))*(wi); // positive gradient
+    }
+
+    ctx.lineTo(xTemp,yTemp);
+    ctx.lineTo(xTemp,y0);
+    ctx.fillStyle = ci;
+    ctx.fill();
+
+    return [xTemp,yTemp]
+}
 
 // Draw legend at bottom of diagram
 function MakeLegend(canH, c1="#D81B60", c2="#1E88E5", c3="#FFC107", c4="#004D40"){
@@ -343,4 +379,4 @@ txt = "2nd Interview";
 wRect = ctx.measureText(txt).width + 20;
 DrawRect(wTot,hTot - hRect,wRect,hRect,"black",txt,"10");
 
-DrawArrow(wTot + wRect/2,hTot, (canH - 40 - hRect/2),9,0,0,0,c1,c2,c3,c4); // arrow for rejections
+DrawArrow(wTot + wRect/2,hTot, (canH - 40 - hRect/2),3,0,3,10,c1,c2,c3,c4); // arrow for rejections
