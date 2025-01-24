@@ -30,6 +30,8 @@ function DrawArrow(x0, y0, yh, w1, w2, w3, w4, c1="#D81B60", c2="#1E88E5", c3="#
     // w1-w4: the width of the 4 segments
     
     // Define variables
+    N = 2.5; // factor to increase widths
+    w1 = N*w1; w2 = N*w2; w3 = N*w3; w4=N*w4;
     const w = w1 + w2 + w3 + w4; // total width of arrow
     const h = yh - y0; // Height of arrow
 
@@ -45,51 +47,61 @@ function DrawArrow(x0, y0, yh, w1, w2, w3, w4, c1="#D81B60", c2="#1E88E5", c3="#
     let yTemp = 0.0; // calculate y-height for segment
     let xTemp = 0.0; // calculate x value for segment
     let wTemp = 0.0; // temp value for total width of segments considered
+    let wi = 0; ci = "black"; //default values
 
     // Fill 1st segment
     if (w1 != 0){ // first segment has width
-        [xTemp, yTemp] = DrawFirst(x0,y0,yh,x1m,x2m,y1,w,h,w1,c1);
-        wTemp = w1;
+        wi = w1; ci = c1; wTemp = w1;
     }
     else {
         if (w2 != 0){
-            [xTemp, yTemp] = DrawFirst(x0,y0,yh,x1m,x2m,y1,w,h,w2,c2);
-            wTemp = w2;
+            wi = w2; ci = c2; wTemp = w2;
         }
         else if ( w3 != 0 ){
-            [xTemp, yTemp] = DrawFirst(x0,y0,yh,x1m,x2m,y1,w,h,w3,c3);
-            wTemp = w3;
+            wi = w3; ci = c3; wTemp = w3;
         }
         else if (w4 != 0){
-            [xTemp, yTemp] = DrawFirst(x0,y0,yh,x1m,x2m,y1,w,h,w4,c4);
-            wTemp = w4;
+            wi = w4; ci = c4; wTemp = w4;
         }
     }
 
+    [xTemp, yTemp] = DrawFirst(x0,y0,yh,x1m,x2m,y1,w,h,wi,ci);
+    AddNum(x1m,y0,wi,h,(wi/N).toString());
+
+
     // Fill next segment
     if (wTemp == w1){ // only one segment
-        [xTemp, yTemp] = DrawMiddle(x0,y0,yh,xTemp,yTemp,w,wTemp,h,w2,c2); // Draw second
-        [xTemp, yTemp] = DrawMiddle(x0,y0,yh,xTemp,yTemp,w,wTemp,h,w3,c3); // Draw third
+        if (w2 != 0){
+            [xTemp, yTemp] = DrawMiddle(x0,y0,yh,xTemp,yTemp,w,wTemp,h,w2,c2); // Draw second
+            AddNum(xTemp-w2,y0,w2,h,(w2/N).toString());
+        }
+        if (w3 != 0){
+            [xTemp, yTemp] = DrawMiddle(x0,y0,yh,xTemp,yTemp,w,wTemp,h,w3,c3); // Draw third
+            AddNum(xTemp-w3,y0,w3,h,(w3/N).toString());
+        }
     }
-    else if (wTemp == w2){ // first segment was empty
+    else if (wTemp == w2 && w3 != 0){ // first segment was empty
         [xTemp, yTemp] = DrawMiddle(x0,y0,yh,xTemp,yTemp,w,wTemp,h,w3,c3); // Draw third
+        AddNum(xTemp-w3,y0,w3,h,(w3/N).toString());
     }
 
     // Fill 4th segment
     if (w4 != 0){ // last segment has width
-        DrawLast(x0,y0,yh,x1p,x2p,y1,w,h,w4,c4);
+        wi = w4; ci = c4;
     }
     else {
         if (w3 != 0){
-            DrawLast(x0,y0,yh,x1p,x2p,y1,w,h,w3,c3);
+            wi = w3; ci = c3;
         }
         else if (w2 != 0){
-            DrawLast(x0,y0,yh,x1p,x2p,y1,w,h,w2,c2);
+            wi = w2; ci = c2;
         }
         else if (w1 != 0){
-            DrawLast(x0,y0,yh,x1p,x2p,y1,w,h,w1,c1);
+            wi = w1; ci = c1;
         }
     }
+    DrawLast(x0,y0,yh,x1p,x2p,y1,w,h,wi,ci);
+    AddNum(x1p-wi,y0,wi,h,(wi/N).toString());
 
     // Draw the outline arrow
     ctx.beginPath();
@@ -183,6 +195,13 @@ function DrawMiddle(x0,y0,yh,xTemp,yTemp,w,wTemp,h,wi,ci){
     ctx.fill();
 
     return [xTemp,yTemp]
+}
+
+function AddNum(xi,yi,wi,h,txt){
+    ctx.fillStyle = "white";
+    ctx.font = "bold 10px Lato";
+    ctx.fillText(txt,xi + wi/2,yi + h/3);
+    ctx.font = "bold 20px Lato";
 }
 
 // Draw legend at bottom of diagram
@@ -366,7 +385,7 @@ txt = "1st Interview";
 wRect = ctx.measureText(txt).width + 20;
 DrawRect(wTot,hTot - hRect,wRect,hRect,"black",txt,"10");
 
-DrawArrow(wTot + wRect/2,hTot, (canH - 40 - hRect/2),9,0,0,0,c1,c2,c3,c4); // arrow for rejections
+DrawArrow(wTot + wRect/2,hTot, (canH - 40 - hRect/2),0,9,0,0,c1,c2,c3,c4); // arrow for rejections
 wTot = wTot + wRect;
 
 DrawLine(wTot - wRect,hTot - hRect/2, wTemp - 3,hTot + hRect + 3,col="black"); // To Online tests
