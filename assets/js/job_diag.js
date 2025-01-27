@@ -325,7 +325,7 @@ MakeLegend(canH,c1,c2,c3,c4);
 
 // Text boxes for offers & rejections
 let wRect = 125; // width of box
-DrawRect(canW-wRect-10,10,wRect,hRect,"black","Offers","0");
+DrawRect(canW-wRect-10,10,wRect,hRect,"black","Offers","1");
 DrawRect(canW-wRect-10,canH-hRect-40,wRect,hRect,"black","Rejections","50");
 
 // Make upper and lower lines
@@ -399,3 +399,7 @@ wRect = ctx.measureText(txt).width + 20;
 DrawRect(wTot,hTot - hRect,wRect,hRect,"black",txt,"10");
 
 DrawArrow(wTot + wRect/2,hTot, (canH - 40 - hRect/2),3,0,3,10,c1,c2,c3,c4); // arrow for rejections
+wTot = wTot + wRect;
+
+// Offer from rejection
+DrawArrow(wTot + wRect/8,(canH - 40 - hRect/2), 10 + hRect/2,1,0,0,0,"purple","black","black","black");
