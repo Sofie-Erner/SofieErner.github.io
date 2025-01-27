@@ -388,7 +388,7 @@ DrawRect(wTot,hTot - hRect,wRect,hRect,"black",txt,"10");
 DrawArrow(wTot + wRect/2,hTot, (canH - 40 - hRect/2),0,9,0,0,c1,c2,c3,c4); // arrow for rejections
 wTot = wTot + wRect;
 
-DrawLine(wTot - wRect,hTot - hRect/2, wTemp - 3,hTot + hRect + 3,col="black"); // To Online tests
+DrawLine(wTemp - 3,hTot + hRect + 3,wTot - wRect,hTot - hRect/2, col="black"); // To Online tests
 DrawLine(wTot - wRect + 3,hTot - 3, wTot - 3*wRect/2,hTot + 2*hRect, col="black"); // To Withdrawn
 DrawLine(wTot,hTot - hRect/2, wTot + 50,hTot - hRect/2, col="black"); // To 2nd Interview
 wTot = wTot + 50;
