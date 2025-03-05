@@ -358,7 +358,9 @@ DrawRect(wTot,hTot,wRect,hRect,"black",txt,"160");
 
 DrawArrow(wTot + wRect/2,hTot + hRect, (canH - 40 - hRect/2),25,5,5,5,c1,c2,c3,c4); // arrow for rejections
 wTot = wTot + wRect;
+let wTemp1 = wTot; // temp storage for later use
 
+// Arrow to Online Tests
 DrawLine(wTot,hTot+ hRect/2, wTot + 53,hTot + hRect + 3, col="black"); // account for rounding of rectangle by adding 3
 wTot = wTot + 50;
 
@@ -369,8 +371,9 @@ DrawRect(wTot,hTot + hRect,wRect,hRect,"black",txt,"10");
 
 DrawArrow(wTot + wRect/2,hTot + 2*hRect, (canH - 40 - hRect/2),9,0,0,0,c1,c2,c3,c4); // arrow for rejections
 wTot = wTot + wRect;
-let wTemp = wTot; // temp storage for later use
+let wTemp2 = wTot; // temp storage for later use
 
+// Arrow to Withdrew Application
 DrawLine(wTot,hTot + 3*hRect/2, wTot + 53,hTot + 2*hRect + 3, col="black"); // account for rounding of rectangle by adding 3
 wTot = wTot + 50;
 
@@ -388,7 +391,8 @@ DrawRect(wTot,hTot - hRect,wRect,hRect,"black",txt,"10");
 DrawArrow(wTot + wRect/2,hTot, (canH - 40 - hRect/2),0,9,0,0,c1,c2,c3,c4); // arrow for rejections
 wTot = wTot + wRect;
 
-DrawLine(wTemp - 3,hTot + hRect + 3,wTot - wRect,hTot - hRect/2, col="black"); // To Online tests
+DrawLine(wTemp1,hTot + hRect/2,wTot - wRect,hTot - hRect/2, col="black"); // To Total
+DrawLine(wTemp2,hTot + 3*hRect/2,wTot - wRect,hTot - hRect/2, col="black"); // To Online tests
 DrawLine(wTot - wRect + 3,hTot - 3, wTot - 3*wRect/2,hTot + 2*hRect, col="black"); // To Withdrawn
 DrawLine(wTot,hTot - hRect/2, wTot + 50,hTot - hRect/2, col="black"); // To 2nd Interview
 wTot = wTot + 50;
