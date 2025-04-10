@@ -4,8 +4,9 @@
 // --- Colours ---
 // ---------------
 
-// colourblind-friendly using https://davidmathlogic.com/colorblind/
-const cols = ["#D81B60", "#1E88E5","#FFC107", "#004D40"];
+// colourblind-friendly using https://www.color-hex.com/color-palette/1044488
+// "IBM Design Library"
+const cols = ["#FFB000","#FE6100","#DC267F","#785EF0","#648FFF"];
 
 // ------------------
 // --- Get canvas ---
@@ -29,20 +30,36 @@ const hRect = 2*(textMes.actualBoundingBoxAscent + textMes.actualBoundingBoxDesc
 // Numbers from Excel and SQL for diagrams
 // [ Waiting Responses, Total applications, Online Test, Withdrew Application, 1st Interview, 2nd Interview, Offers, Rejections]
 const boxNums = [126, 246, 15, 11, 14, 4, 4, 104];
-
+const rejNums = [[72,11,4,0],[4,0,0,0],[3,1,2,0],[1,0,0,0]];
 // ------------------------
 // --- Define Functions ---
 // ------------------------
 
 // This function contains the code to draw arrows
 // The arrow will be filled with 4 different segments
-function DrawArrow(x0, y0, yh, w1, w2, w3, w4, c1="#D81B60", c2="#1E88E5", c3="#FFC107", c4="#004D40"){
+function DrawArrow(x0,y0,yh,w1,w2,w3,w4,c1,c2,c3,c4){
     // (x0,y0): starting coordinate from centre of arrow (for reference of placement)
     // w1-w4: the width of the 4 segments
     
     // Define variables
-    N = 2.5; // factor to increase widths
-    w1 = N*w1; w2 = N*w2; w3 = N*w3; w4=N*w4;
+    const N = 2.5;
+
+    /*
+    let wS = [w1i,w2i,w3i,w4i];
+    wS = wS.map(widthFunc);
+
+    // function to vary width depending on value
+    function widthFunc(value, index, array){
+        if (value < 5){return 10}
+        else if (value > 15){return 30}
+        else{return N*value}
+    }
+
+    w1 = wS[0]; w2 = wS[1]; w3 = wS[2]; w4=wS[3];
+    */
+
+    w1=N*w1; w2=N*w2; w3=N*w3; w4=N*w4;
+
     const w = w1 + w2 + w3 + w4; // total width of arrow
     const h = yh - y0; // Height of arrow
 
@@ -216,8 +233,8 @@ function AddNum(xi,yi,wi,h,txt){
 }
 
 // Draw legend at bottom of diagram
-function MakeLegend(canH, c1="#D81B60", c2="#1E88E5", c3="#FFC107", c4="#004D40"){
-    // Using height of canvas, place legend for colours c1-c4
+function MakeLegend(canH,c1,c2,c3,c4,c5){
+    // Using height of canvas, place legend for colours c1-c5
     ctx.textAlign = "left";
 
     ctx.strokeStyle = c1;
@@ -248,6 +265,14 @@ function MakeLegend(canH, c1="#D81B60", c2="#1E88E5", c3="#FFC107", c4="#004D40"
 
     wTxt = 40 + wTxt + ctx.measureText(txt).width;
     txt = "Not Hiring Anymore";
+    ctx.fillRect(50+wTxt,canH-30,20,20);
+    ctx.fillText(txt,80+wTxt,canH-20);
+
+    ctx.strokeStyle = c5;
+    ctx.fillStyle = c5;
+
+    wTxt = 40 + wTxt + ctx.measureText(txt).width;
+    txt = "Offer";
     ctx.fillRect(50+wTxt,canH-30,20,20);
     ctx.fillText(txt,80+wTxt,canH-20);
 
@@ -335,7 +360,7 @@ function DrawLine(xS, yS, xF, yF, col="black"){
 // --------------------
 
 // --- Draw legend ---
-MakeLegend(canH,cols[0],cols[1],cols[2],cols[3]);
+MakeLegend(canH,cols[0],cols[1],cols[2],cols[3],cols[4]);
 
 // --- Text boxes for offers & rejections ---
 let wRect = 125; // width of box
@@ -370,7 +395,8 @@ txt = "Total";
 wRect = ctx.measureText(txt).width + 20;
 DrawRect(wTot,hTot,wRect,hRect,"black",txt,boxNums[1].toString());
 
-DrawArrow(wTot + wRect/2,hTot + hRect, (canH - 40 - hRect/2),25,5,5,5,cols[0],cols[1],cols[2],cols[3]); // arrow for rejections
+// arrow for rejections
+DrawArrow(wTot+wRect/2,hTot+hRect,(canH-40-hRect/2),rejNums[0][0],rejNums[0][1],rejNums[0][2],rejNums[0][3],cols[0],cols[1],cols[2],cols[3]);
 wTot = wTot + wRect;
 let wTemp1 = wTot; // temp storage for later use
 
@@ -383,7 +409,8 @@ txt = "Online Test";
 wRect = ctx.measureText(txt).width + 20;
 DrawRect(wTot,hTot + hRect,wRect,hRect,"black",txt,boxNums[2].toString());
 
-DrawArrow(wTot + wRect/2,hTot + 2*hRect, (canH - 40 - hRect/2),9,0,0,0,cols[0],cols[1],cols[2],cols[3]); // arrow for rejections
+ // arrow for rejections
+DrawArrow(wTot+wRect/2,hTot+2*hRect,(canH-40-hRect/2),rejNums[1][0],rejNums[1][1],rejNums[1][2],rejNums[1][3],cols[0],cols[1],cols[2],cols[3]);
 wTot = wTot + wRect;
 let wTemp2 = wTot; // temp storage for later use
 
@@ -402,10 +429,10 @@ txt = "1st Interview";
 wRect = ctx.measureText(txt).width + 20;
 DrawRect(wTot,hTot - hRect,wRect,hRect,"black",txt,boxNums[4].toString());
 
-// arrow for rejections
-DrawArrow(wTot + wRect/2,hTot, (canH - 40 - hRect/2),0,9,0,0,cols[0],cols[1],cols[2],cols[3]);
 // arrow for offers
-DrawArrow(wTot + wRect/2,hTot - hRect, 10 + hRect/2,1,0,0,0,cols[0],cols[1],cols[2],cols[3]);
+DrawArrow(wTot + wRect/2,hTot - hRect, 10 + hRect/2,1,0,0,0,cols[4],"black","black","black");
+// arrow for rejections
+DrawArrow(wTot + wRect/2,hTot, (canH - 40 - hRect/2),rejNums[2][0],rejNums[2][1],rejNums[2][2],rejNums[2][3],cols[0],cols[1],cols[2],cols[3]);
 wTot = wTot + wRect;
 
 DrawLine(wTemp1,hTot + hRect/2,wTot - wRect,hTot - hRect/2, col="black"); // To Total
@@ -417,14 +444,13 @@ wTot = wTot + 50;
 // --- 2nd Interview --- 
 txt = "2nd Interview";
 wRect = ctx.measureText(txt).width + 20;
-
-// arrow for rejections
 DrawRect(wTot,hTot - hRect,wRect,hRect,"black",txt,boxNums[5].toString());
-// arrow for offers
-DrawArrow(wTot + wRect/2,hTot - hRect, 10 + hRect/2,2,0,0,0,cols[0],cols[1],cols[2],cols[3]);
 
-DrawArrow(wTot + wRect/2,hTot, (canH - 40 - hRect/2),3,0,3,10,cols[0],cols[1],cols[2],cols[3]); // arrow for rejections
+// arrow for offers
+DrawArrow(wTot + wRect/2,hTot - hRect, 10 + hRect/2,2,0,0,0,cols[4],"black","black","black");
+// arrow for rejections
+DrawArrow(wTot + wRect/2,hTot, (canH - 40 - hRect/2),rejNums[3][0],rejNums[3][1],rejNums[3][2],rejNums[3][3],cols[0],cols[1],cols[2],cols[3]);
 wTot = wTot + wRect;
 
 // --- Offer from rejection --- 
-DrawArrow(wTot + wRect/8,(canH - 40 - hRect/2), 10 + hRect/2,1,0,0,0,"purple","black","black","black");
+DrawArrow(wTot + wRect/8,(canH - 40 - hRect/2), 10 + hRect/2,1,0,0,0,cols[4],"black","black","black");
