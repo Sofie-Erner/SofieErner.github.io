@@ -1,13 +1,16 @@
 // This script contains the code to draw a diagram showing data for job seeking
 
+// ---------------
 // --- Colours ---
-// colourblind-friendly using https://davidmathlogic.com/colorblind/
-const c1 = "#D81B60";
-const c2 = "#1E88E5";
-const c3 = "#FFC107";
-const c4 = "#004D40";
+// ---------------
 
+// colourblind-friendly using https://davidmathlogic.com/colorblind/
+const cols = ["#D81B60", "#1E88E5","#FFC107", "#004D40"];
+
+// ------------------
 // --- Get canvas ---
+// ------------------
+
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -22,6 +25,14 @@ ctx.textAlign = "center";
 
 const textMes = ctx.measureText("Testy");
 const hRect = 2*(textMes.actualBoundingBoxAscent + textMes.actualBoundingBoxDescent) + 30; // calculate box height
+
+// Numbers from Excel and SQL for diagrams
+// [ Waiting Responses, Total applications, Online Test, Withdrew Application, 1st Interview, 2nd Interview, Offers, Rejections]
+const boxNums = [126, 246, 15, 11, 14, 4, 4, 104];
+
+// ------------------------
+// --- Define Functions ---
+// ------------------------
 
 // This function contains the code to draw arrows
 // The arrow will be filled with 4 different segments
@@ -319,16 +330,19 @@ function DrawLine(xS, yS, xF, yF, col="black"){
     ctx.fill();
 };
 
+// --------------------
 // --- Make Diagram ---
-// Draw legend
-MakeLegend(canH,c1,c2,c3,c4);
+// --------------------
 
-// Text boxes for offers & rejections
+// --- Draw legend ---
+MakeLegend(canH,cols[0],cols[1],cols[2],cols[3]);
+
+// --- Text boxes for offers & rejections ---
 let wRect = 125; // width of box
-DrawRect(canW-wRect-10,10,wRect,hRect,"black","Offers","1");
-DrawRect(canW-wRect-10,canH-hRect-40,wRect,hRect,"black","Rejections","50");
+DrawRect(canW-wRect-10,10,wRect,hRect,"black","Offers",boxNums[6].toString());
+DrawRect(canW-wRect-10,canH-hRect-40,wRect,hRect,"black","Rejections",boxNums[7].toString());
 
-// Make upper and lower lines
+// --- Make upper and lower lines --- 
 ctx.beginPath();
 ctx.moveTo(10,10 + hRect/2);
 ctx.lineTo(canW-wRect-10,10 + hRect/2);
@@ -340,23 +354,23 @@ ctx.lineWidth = 4;
 ctx.strokeStyle = "black";
 ctx.stroke();
 
-// Waiting responses
+// --- Waiting responses --- 
 let txt = "Waiting Responses";
 wRect = ctx.measureText(txt).width + 20; // update rectangle with
 let hTot = (canH-30-hRect)/2  - 50; // Vertical position
 
-DrawRect(10,hTot, wRect, hRect,"black",txt,"100");
+DrawRect(10,hTot, wRect, hRect,"black",txt,boxNums[0].toString());
 let wTot = 10 + wRect; // Horizontal position
 
 DrawLine(wTot + 50, hTot + hRect/2, wTot, hTot + hRect/2, col="black");
 wTot = wTot + 50;
 
-// Total Applications
+// --- Total Applications --- 
 txt = "Total";
 wRect = ctx.measureText(txt).width + 20;
-DrawRect(wTot,hTot,wRect,hRect,"black",txt,"160");
+DrawRect(wTot,hTot,wRect,hRect,"black",txt,boxNums[1].toString());
 
-DrawArrow(wTot + wRect/2,hTot + hRect, (canH - 40 - hRect/2),25,5,5,5,c1,c2,c3,c4); // arrow for rejections
+DrawArrow(wTot + wRect/2,hTot + hRect, (canH - 40 - hRect/2),25,5,5,5,cols[0],cols[1],cols[2],cols[3]); // arrow for rejections
 wTot = wTot + wRect;
 let wTemp1 = wTot; // temp storage for later use
 
@@ -364,12 +378,12 @@ let wTemp1 = wTot; // temp storage for later use
 DrawLine(wTot,hTot+ hRect/2, wTot + 53,hTot + hRect + 3, col="black"); // account for rounding of rectangle by adding 3
 wTot = wTot + 50;
 
-// Online Tests
+// --- Online Tests --- 
 txt = "Online Test";
 wRect = ctx.measureText(txt).width + 20;
-DrawRect(wTot,hTot + hRect,wRect,hRect,"black",txt,"10");
+DrawRect(wTot,hTot + hRect,wRect,hRect,"black",txt,boxNums[2].toString());
 
-DrawArrow(wTot + wRect/2,hTot + 2*hRect, (canH - 40 - hRect/2),9,0,0,0,c1,c2,c3,c4); // arrow for rejections
+DrawArrow(wTot + wRect/2,hTot + 2*hRect, (canH - 40 - hRect/2),9,0,0,0,cols[0],cols[1],cols[2],cols[3]); // arrow for rejections
 wTot = wTot + wRect;
 let wTemp2 = wTot; // temp storage for later use
 
@@ -377,18 +391,21 @@ let wTemp2 = wTot; // temp storage for later use
 DrawLine(wTot,hTot + 3*hRect/2, wTot + 53,hTot + 2*hRect + 3, col="black"); // account for rounding of rectangle by adding 3
 wTot = wTot + 50;
 
-// Withdrew Application
+// --- Withdrew Application --- 
 txt = "Withdrew Application";
 wRect = ctx.measureText(txt).width + 20;
-DrawRect(wTot,hTot + 2*hRect,wRect,hRect,"black",txt,"3");
+DrawRect(wTot,hTot + 2*hRect,wRect,hRect,"black",txt,boxNums[3].toString());
 wTot = wTot + wRect;
 
-// 1st Interview
+// --- 1st Interview --- 
 txt = "1st Interview";
 wRect = ctx.measureText(txt).width + 20;
-DrawRect(wTot,hTot - hRect,wRect,hRect,"black",txt,"10");
+DrawRect(wTot,hTot - hRect,wRect,hRect,"black",txt,boxNums[4].toString());
 
-DrawArrow(wTot + wRect/2,hTot, (canH - 40 - hRect/2),0,9,0,0,c1,c2,c3,c4); // arrow for rejections
+// arrow for rejections
+DrawArrow(wTot + wRect/2,hTot, (canH - 40 - hRect/2),0,9,0,0,cols[0],cols[1],cols[2],cols[3]);
+// arrow for offers
+DrawArrow(wTot + wRect/2,hTot - hRect, 10 + hRect/2,1,0,0,0,cols[0],cols[1],cols[2],cols[3]);
 wTot = wTot + wRect;
 
 DrawLine(wTemp1,hTot + hRect/2,wTot - wRect,hTot - hRect/2, col="black"); // To Total
@@ -397,13 +414,17 @@ DrawLine(wTot - wRect + 3,hTot - 3, wTot - 3*wRect/2,hTot + 2*hRect, col="black"
 DrawLine(wTot,hTot - hRect/2, wTot + 50,hTot - hRect/2, col="black"); // To 2nd Interview
 wTot = wTot + 50;
 
-// 2nd Interview
+// --- 2nd Interview --- 
 txt = "2nd Interview";
 wRect = ctx.measureText(txt).width + 20;
-DrawRect(wTot,hTot - hRect,wRect,hRect,"black",txt,"10");
 
-DrawArrow(wTot + wRect/2,hTot, (canH - 40 - hRect/2),3,0,3,10,c1,c2,c3,c4); // arrow for rejections
+// arrow for rejections
+DrawRect(wTot,hTot - hRect,wRect,hRect,"black",txt,boxNums[5].toString());
+// arrow for offers
+DrawArrow(wTot + wRect/2,hTot - hRect, 10 + hRect/2,2,0,0,0,cols[0],cols[1],cols[2],cols[3]);
+
+DrawArrow(wTot + wRect/2,hTot, (canH - 40 - hRect/2),3,0,3,10,cols[0],cols[1],cols[2],cols[3]); // arrow for rejections
 wTot = wTot + wRect;
 
-// Offer from rejection
+// --- Offer from rejection --- 
 DrawArrow(wTot + wRect/8,(canH - 40 - hRect/2), 10 + hRect/2,1,0,0,0,"purple","black","black","black");
